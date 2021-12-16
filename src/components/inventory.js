@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AddFishForm from './inventory'
+import AddFishForm from './add_fish_form';
 
 
 class Inventory extends Component {
@@ -7,7 +7,7 @@ class Inventory extends Component {
         return(
             <div className="inventory">
                 <h2>Inventory</h2>
-                < AddFishForm />
+                < AddFishForm addFish={this.props.addFish}/>
             </div>
         )    
     }
