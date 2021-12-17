@@ -13,6 +13,13 @@ class App extends Component{
     };
 
     componentDidMount(){
+        // when the component mounts we need to check if there's something in local storage and if there is then we render it
+        const localStorageRef = localStorage.getItem(this.props.match.params.storeId)
+        if (localStorageRef){
+            this.setState({
+                order: JSON.parse(localStorageRef)
+            })
+        }
     //    here ref belongs to firebase. refers to a piece of data in DB
     // sync up with the fishes of a specific store.
     // every time we visit a store base.syncState will store in the DB the fishes that belong to it 
@@ -21,6 +28,13 @@ class App extends Component{
             state: 'fishes'
         });
     }
+    // to persist the order we will use localStorage everytime the app updates 
+    componentDidUpdate() {
+        // console.log(this.state.order)
+        // keept in localSotrage the order for a specifc store
+        localStorage.setItem(this.props.match.params.storeId, JSON.stringify(this.state.order))
+    }
+
 
     componentWillUnmount(){
         // remove the reference to the store in the DB. Avoud memory leaks
@@ -40,6 +54,21 @@ class App extends Component{
         })
     }
 
+    updateFish = (key, updatedFish) =>{
+        // copy into a variable the fishes we have in state
+        const fishes = { ...this.state.fishes};
+        // update state
+        fishes[key] =  updatedFish;
+        // set state again
+        this.setState({fishes})
+    }
+
+    deleteFish = (key) =>{
+        const fishes = { ...this.state.fishes};
+        fishes[key] = null;
+        this.setState({fishes})
+    }
+
     loadFishes = () => {
         // console.log()s
         this.setState({
@@ -57,6 +86,16 @@ class App extends Component{
            order
         })
     }
+
+    removeFromOrder = (key) =>{
+        const order = { ...this.state.order};
+        // add fish to cart or update quantity
+        delete order[key] 
+        // call setSate to update state
+        this.setState({
+           order
+        })
+    }
     render() {
         return(
             <div className="catch-of-the-day">
@@ -67,8 +106,8 @@ class App extends Component{
                         {Object.keys(this.state.fishes).map(fish => <Fish fish={this.state.fishes[fish]} key={fish} index={fish} addToOrder={this.addToOrder}/> )}
                     </ul>
                 </div>
-                <Order fishes={this.state.fishes} order={this.state.order}/>
-                <Inventory addFish={this.addFish} loadFishes={this.loadFishes}/>
+                <Order fishes={this.state.fishes} order={this.state.order} removeFromOrder={this.removeFromOrder}/>
+                <Inventory addFish={this.addFish} loadFishes={this.loadFishes} fishes={this.state.fishes} updateFish={this.updateFish} deleteFish={this.deleteFish}/>
             </div>
         )
     }
