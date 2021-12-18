@@ -1,7 +1,14 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {formatPrice} from '../helpers';
 
 class EditFishForm extends Component{
+    static propTypes = {
+        fish: PropTypes.shape({
+            index: PropTypes.string,
+            updateFish: PropTypes.func
+        })
+    };
+
     handleChange = (e) => {
         // instead of unigs ref to get the value of each input (like we did in addFishForm) we can use the event.currentTarget.value
         console.log(e.currentTarget.value)

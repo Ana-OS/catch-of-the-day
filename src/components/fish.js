@@ -1,7 +1,22 @@
 import React, { Component } from 'react';
 import {formatPrice} from '../helpers';
+import PropTypes from 'prop-types';
+
 
 class Fish extends Component {
+    // static because even though we are creating multiple fish we use the same proptypes
+    static propTypes = {
+        // shape allows us to pass an object with specific properties
+        details: PropTypes.shape({
+            image: PropTypes.string,
+            name: PropTypes.string,
+            desc: PropTypes.string,
+            status: PropTypes.string,
+            price: PropTypes.number,
+        }),
+        addToOrder: PropTypes.func
+    };
+
     render(){
         const {image, name, price, desc, status} = this.props.fish
         const available = status === "available"

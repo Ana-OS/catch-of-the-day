@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+// propTypes specifies the type of data that needs to be passed on
 
 const Header = ({subtitle}) => (
     <header className="top">
@@ -16,4 +18,7 @@ const Header = ({subtitle}) => (
     </header>  
 )
 
+Header.propTypes = {
+    subtitle: PropTypes.string.isRequired
+}
 export default Header
