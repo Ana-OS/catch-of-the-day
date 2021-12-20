@@ -20,7 +20,7 @@ class Inventory extends Component {
 
     // checking if there's a user  logged in  everytime we render the component
     componentDidMount() {
-        firebase.auth.onAuthStateChanged(user => {
+        firebase.auth().onAuthStateChanged(user => {
             if(user){
                 this.authHandler({user})
             }
@@ -28,10 +28,8 @@ class Inventory extends Component {
     }
 
     authHandler = async (authData) => {
-        console.log(authData)
     // look up the curr store in database
         const store =  await base.fetch(this.props.storeId, {context: this})
-        console.log(store)
     // claim it if there's no owner
         if(!store.owner){
             await base.post(`${this.props.storeId}/owner`, {
