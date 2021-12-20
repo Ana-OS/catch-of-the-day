@@ -18,6 +18,15 @@ class Inventory extends Component {
         owner: null
     };
 
+    // checking if there's a user  logged in  everytime we render the component
+    componentDidMount() {
+        firebase.auth.onAuthStateChanged(user => {
+            if(user){
+                this.authHandler({user})
+            }
+        })
+    }
+
     authHandler = async (authData) => {
         console.log(authData)
     // look up the curr store in database
